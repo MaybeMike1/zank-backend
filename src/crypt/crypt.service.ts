@@ -13,6 +13,10 @@ export class CryptService implements ICryptService {
     return hash(input, saltRounds);
   }
 
+  hashSync(input: string) {
+    return hashSync(input, saltRounds);
+  }
+
   async compare(input1: string, input2: string): Promise<boolean> {
     return compare(input1, input2);
   }

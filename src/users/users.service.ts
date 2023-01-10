@@ -8,7 +8,7 @@ import { User, UserOmittingPasswordHash } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private UserRepository: Repository<User>,
+    private userRepository: Repository<User>,
     private cryptService: CryptService,
   ) {}
 
@@ -24,7 +24,7 @@ export class UsersService {
       ...rest,
     };
 
-    const savedUser = await this.UserRepository.save(userToSave);
+    const savedUser = await this.userRepository.save(userToSave);
 
     if (!savedUser) return undefined;
 
@@ -32,18 +32,28 @@ export class UsersService {
 
     return userNoPassword;
   }
-  private readonly users: User[] = [
-    {
-      id: 1,
-      email: 'test@gmail.com',
-      password: 'hash',
-      firstName: 'Hans',
-      lastName: 'Hansen',
-      username: 'test@gmail.com',
-    },
-  ];
 
   async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+    const user = await this.userRepository.findOne({
+      where: { username: username },
+    });
+
+    if (!user) return undefined;
+
+    return user;
+  }
+
+  async findAll(): Promise<User[] | undefined> {
+    const res = await this.userRepository.find();
+
+    return res ? res : undefined;
+  }
+
+  async remove(id: number): Promise<User | undefined> {
+    const res = await this.userRepository.findOne({ where: { id: id } });
+
+    await this.userRepository.delete(id);
+
+    return res;
   }
 }
