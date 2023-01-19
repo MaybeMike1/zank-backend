@@ -12,7 +12,11 @@ import { User } from './users/entities/user.entity';
 import { Address } from './addresses/entities/address.entity';
 import { Zipcode } from './zipcodes/entities/zipcode.entity';
 import { Country } from './countries/entities/country.entity';
+
+import { TagsModule } from './tags/tags.module';
 import * as Joi from 'joi';
+import { Tag } from './tags/entities/tag.entity';
+import { ProductsModule } from './products/products.module';
 
 const validation = {
   validationSchema: Joi.object({
@@ -37,7 +41,7 @@ const validation = {
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: [User, Address, Zipcode, Country],
+        entities: [User, Address, Zipcode, Country, Tag],
         factories: [],
         synchronize: true,
         logging: 'all',
@@ -49,6 +53,8 @@ const validation = {
     AddressesModule,
     ZipcodesModule,
     CountriesModule,
+    TagsModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

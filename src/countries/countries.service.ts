@@ -36,7 +36,18 @@ export class CountriesService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async update(id: number, updateCountryDto: UpdateCountryDto): Promise<void> {}
+  async update(
+    id: number,
+    updateCountryDto: UpdateCountryDto,
+  ): Promise<Country | undefined> {
+    const foundCountry = await this.countryRepository.findOne({ id: id });
+
+    if (!foundCountry) return undefined;
+
+    await this.countryRepository.update({ id: id }, updateCountryDto);
+
+    return foundCountry;
+  }
 
   async remove(id: number): Promise<Country | undefined> {
     const res = await this.countryRepository.findOne({ where: { id: id } });

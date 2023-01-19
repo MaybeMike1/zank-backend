@@ -3,6 +3,7 @@ import { Country } from 'src/countries/entities/country.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
